@@ -1,5 +1,6 @@
 <?php
 	include 'koneksi.php';
+	session_start();
 
 	$query = "SELECT * FROM tb_laporan_unit;";
 	$sql = mysqli_query($conn, $query);
@@ -43,6 +44,21 @@
 	<a href="kelola.php" type="button" class="btn btn-primary">
 		<i class="fa fa-plus"></i>
 		Tambah Data</a>
+
+	<?php
+		if (isset($_SESSION['eksekusi'])) {
+	?>
+		<div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+				<?php
+					echo $_SESSION['eksekusi'];
+					unset($_SESSION['eksekusi']); // Hapus hanya elemen 'eksekusi' dari sesi
+				?>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	<?php
+		}
+	?>
+
 	<div class="table-responsive mt-3">
 		<table class="table align-middle table-bordered table-hover">
 		    <thead>
