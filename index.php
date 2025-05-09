@@ -129,10 +129,14 @@
 	                </select>
 				</div>
 
-				<!-- Tombol Filter dan Reset -->
+				<!-- Tombol Filter, Reset, dan Download -->
 	            <div class="col-md-3 d-flex align-items-end">
 	                <button type="submit" class="btn btn-primary me-2">Filter</button>
-	                <a href="index.php" class="btn btn-secondary">Reset</a>
+	                <a href="index.php" class="btn btn-secondary me-2">Reset</a>
+					<a href="print.php?filter_bulan=<?php echo isset($_GET['filter_bulan']) ? $_GET['filter_bulan'] : ''; ?>&filter_alat_berat=<?php echo isset($_GET['filter_alat_berat']) ? $_GET['filter_alat_berat'] : ''; ?>" 
+					class="btn btn-danger" target="_blank">
+						<i class="fa fa-file-pdf-o"></i> Download
+					</a>
 	            </div>
 
 	        </div>
