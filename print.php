@@ -55,7 +55,7 @@ $no = 0;
 while ($row = mysqli_fetch_assoc($result)) {
     $html .= '<tr>
                 <td>' . (++$no) . '</td>
-                <td>' . $row['tanggal'] . '</td>
+                <td>' . date('d F Y', strtotime($row['tanggal'])) . '</td>
                 <td>' . $row['alat_berat'] . '</td>
                 <td>' . $row['part_name'] . '</td>
                 <td>' . $row['part_number'] . '</td>
@@ -74,7 +74,7 @@ $dompdf = new Dompdf();
 $dompdf->loadHtml($html);
 
 // Set ukuran dan orientasi kertas
-$dompdf->setPaper('A4', 'landscape');
+$dompdf->setPaper('A4', 'portrait');
 
 // Render HTML ke PDF
 $dompdf->render();

@@ -167,7 +167,7 @@
 		    ?>	
 			    	<tr>
 			        <td><center><?php echo ++$no;?></center></td>
-			        <td><?php echo $result['tanggal'];?></td>
+			        <td><?php echo date('d F Y', strtotime($result['tanggal'])); ?></td>
 			        <td><?php echo $result['alat_berat'];?></td>
 			        <td><?php echo $result['part_name'];?></td>
 			        <td><?php echo $result['part_number'];?></td>
