@@ -6,21 +6,17 @@ use Dompdf\Dompdf;
 // Ambil koneksi
 include 'koneksi.php';
 
-// Ambil filter dari URL
+// Query dasar
 $query = "SELECT * FROM tb_laporan_unit WHERE 1=1";
 
-// Tambahkan filter tahun jika ada
-if (isset($_GET['filter_tahun']) && $_GET['filter_tahun'] != '') {
-    $filter_tahun = $_GET['filter_tahun'];
-    $query .= " AND YEAR(tanggal) = '$filter_tahun'";
-}
-
-// Tambahkan filter bulan jika ada
-if (isset($_GET['filter_bulan']) && $_GET['filter_bulan'] != '') {
-    $filter_bulan = $_GET['filter_bulan'];
-    $filter_tahun = date('Y', strtotime($filter_bulan));
-    $filter_bulan = date('m', strtotime($filter_bulan));
-    $query .= " AND MONTH(tanggal) = '$filter_bulan' AND YEAR(tanggal) = '$filter_tahun'";
+// Tambahkan filter bulan dan tahun jika ada
+if (isset($_GET['filter_bulan_tahun']) && $_GET['filter_bulan_tahun'] != '') {
+    $filter_bulan_tahun = $_GET['filter_bulan_tahun'];
+    if (preg_match('/^\d{4}-\d{2}$/', $filter_bulan_tahun)) { // Validasi format YYYY-MM
+        $filter_bulan = date('m', strtotime($filter_bulan_tahun));
+        $filter_tahun = date('Y', strtotime($filter_bulan_tahun));
+        $query .= " AND MONTH(tanggal) = '$filter_bulan' AND YEAR(tanggal) = '$filter_tahun'";
+    }
 }
 
 // Tambahkan filter alat berat jika ada
@@ -34,12 +30,24 @@ $result = mysqli_query($conn, $query);
 
 // Mulai output HTML untuk PDF
 $html = '<h2 style="text-align: center;">Laporan Perawatan Alat Berat</h2>';
+
+// Tambahkan keterangan filter
+$periode = '';
+if (isset($filter_bulan_tahun)) {
+    $bulan = date('F', strtotime($filter_bulan_tahun));
+    $tahun = date('Y', strtotime($filter_bulan_tahun));
+    $periode = "Periode: Bulan $bulan Tahun $tahun";
+}
+if (isset($filter_alat_berat) && $filter_alat_berat != '') {
+    $periode .= "<br>Alat Berat: $filter_alat_berat";
+}
+$html .= '<p style="text-align: left; margin-left: 10px;">' . $periode . '</p>';
+
 $html .= '<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">';
 $html .= '<thead>
             <tr>
                 <th>No.</th>
                 <th>Tanggal</th>
-                <th>Alat Berat</th>
                 <th>Part Name</th>
                 <th>Part Number</th>
                 <th>Qty</th>
@@ -56,7 +64,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     $html .= '<tr>
                 <td>' . (++$no) . '</td>
                 <td>' . date('d F Y', strtotime($row['tanggal'])) . '</td>
-                <td>' . $row['alat_berat'] . '</td>
                 <td>' . $row['part_name'] . '</td>
                 <td>' . $row['part_number'] . '</td>
                 <td>' . $row['qty'] . '</td>
@@ -85,23 +92,15 @@ $dompdf->setPaper('A4', 'portrait');
 
 // Tentukan nama file berdasarkan filter
 $nama_file = "laporan_perawatan";
-
-if (isset($_GET['filter_bulan']) && $_GET['filter_bulan'] != '') {
-    $bulan = date('F', strtotime($_GET['filter_bulan'])); // Nama bulan
-    $nama_file .= "_$bulan";
+if (isset($filter_bulan_tahun) && $filter_bulan_tahun != '') {
+    $bulan = date('F', strtotime($filter_bulan_tahun));
+    $tahun = date('Y', strtotime($filter_bulan_tahun));
+    $nama_file .= "_{$bulan}_{$tahun}";
 }
-
-if (isset($_GET['filter_tahun']) && $_GET['filter_tahun'] != '') {
-    $tahun = $_GET['filter_tahun'];
-    $nama_file .= "_$tahun";
+if (isset($filter_alat_berat) && $filter_alat_berat != '') {
+    $nama_file .= "_{$filter_alat_berat}";
 }
-
-if (isset($_GET['filter_alat_berat']) && $_GET['filter_alat_berat'] != '') {
-    $alat_berat = str_replace(' ', '_', $_GET['filter_alat_berat']); // Ganti spasi dengan underscore
-    $nama_file .= "_$alat_berat";
-}
-
-$nama_file .= ".pdf"; // Tambahkan ekstensi file
+$nama_file .= ".pdf";
 
 // Render HTML ke PDF
 $dompdf->render();
