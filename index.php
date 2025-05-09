@@ -130,13 +130,11 @@
 				</div>
 
 				<!-- Tombol Filter, Reset, dan Download -->
-	            <div class="col-md-3 d-flex align-items-end">
-	                <button type="submit" class="btn btn-primary me-2">Filter</button>
-	                <a href="index.php" class="btn btn-secondary me-2">Reset</a>
+	            <div class="col-md-3 d-flex align-items-end mt-3">
+	                <button type="submit" class="btn btn-success me-2">Filter</button>
+	                <a href="index.php" class="btn btn-warning me-2">Reset</a>
 					<a href="print.php?filter_bulan=<?php echo isset($_GET['filter_bulan']) ? $_GET['filter_bulan'] : ''; ?>&filter_alat_berat=<?php echo isset($_GET['filter_alat_berat']) ? $_GET['filter_alat_berat'] : ''; ?>" 
-					class="btn btn-danger" target="_blank">
-						<i class="fa fa-file-pdf-o"></i> Download
-					</a>
+					class="btn btn-danger" target="_blank">Download</a>
 	            </div>
 
 	        </div>

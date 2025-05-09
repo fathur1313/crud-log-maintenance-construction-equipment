@@ -76,9 +76,29 @@ $dompdf->loadHtml($html);
 // Set ukuran dan orientasi kertas
 $dompdf->setPaper('A4', 'portrait');
 
+// Tentukan nama file berdasarkan filter
+$nama_file = "laporan_perawatan";
+
+if (isset($_GET['filter_bulan']) && $_GET['filter_bulan'] != '') {
+    $bulan = date('F', strtotime($_GET['filter_bulan'])); // Nama bulan
+    $nama_file .= "_$bulan";
+}
+
+if (isset($_GET['filter_tahun']) && $_GET['filter_tahun'] != '') {
+    $tahun = $_GET['filter_tahun'];
+    $nama_file .= "_$tahun";
+}
+
+if (isset($_GET['filter_alat_berat']) && $_GET['filter_alat_berat'] != '') {
+    $alat_berat = str_replace(' ', '_', $_GET['filter_alat_berat']); // Ganti spasi dengan underscore
+    $nama_file .= "_$alat_berat";
+}
+
+$nama_file .= ".pdf"; // Tambahkan ekstensi file
+
 // Render HTML ke PDF
 $dompdf->render();
 
 // Output file PDF
-$dompdf->stream("laporan_perawatan.pdf", ["Attachment" => true]);
+$dompdf->stream($nama_file, ["Attachment" => true]);
 ?>
