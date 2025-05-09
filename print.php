@@ -62,9 +62,16 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <td>' . $row['qty'] . '</td>
                 <td>' . $row['harga_satuan'] . '</td>
                 <td>' . $row['harga_total'] . '</td>
-                <td>' . $row['keterangan'] . '</td>
-                <td><img src="' . $_SERVER['DOCUMENT_ROOT'] . '/crud_perusahaan/img/' . $row['foto_dokumentasi'] . '" style="width: 125px"></td>
-              </tr>';
+                <td>' . $row['keterangan'] . '</td>';
+    $img_path = realpath($_SERVER['DOCUMENT_ROOT'] . '/crud_perusahaan/img/' . $row['foto_dokumentasi']);
+    if ($img_path && file_exists($img_path)) {
+        $img_data = base64_encode(file_get_contents($img_path));
+        $img_type = mime_content_type($img_path);
+        $html .= '<td><img src="data:' . $img_type . ';base64,' . $img_data . '" style="width: 125px"></td>';
+    } else {
+        $html .= '<td>Gambar tidak ditemukan</td>';
+    }
+    $html .= '</tr>';
 }
 
 $html .= '</tbody></table>';
