@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<?php
+    session_start();
+    if(!isset($_SESSION['username'])){
+        header('location: masuk.php');
+        exit;
+    };
+?>
 <html lang="en">
     	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -43,13 +50,17 @@
     <div class="container-fluid">
         <div class="text-center px-4 py-5">
             <img class="d-block mx-auto mb-2" src="img/Logo/ITP.png" width="95" height="95" alt="Logo">
-            <p class="">Selamat Datang di</p>
-            <h1 class="text-center">Dashboard Master Perusahaan</h1>
+            <span class="">Selamat Datang
+                <?php
+                    echo  $_SESSION['username'];
+                ?>
+            </span>
+            <h1 class="text-center">Dashboard Admin Perusahaan</h1>
             <div class="row">
                 <div class="col-md-4">
                     <h2 class="mb-4">Data Maintenance Alat</h2>
                     <p class="text-muted">Jumlah Data: ~</p>
-                    <a href="index.php" class="btn btn-success">Tabel Data</a>
+                    <a href="tabel_maintenance.php" class="btn btn-success">Tabel Data</a>
                 </div>
                 <div class="col-md-4">
                     <h2 class="mb-4">Data Pengguna</h2>
@@ -57,15 +68,16 @@
                     <a href="tambah_pengguna.html" class="btn btn-warning">Tabel Pengguna</a>
                 </div>
                 <div class="col-md-4">
-                    <h2 class="mb-4">Data Master</h2>
-                    <p class="text-muted">Jumlah Master: 2</p>
-                    <a href="tambah_master.html" class="btn btn-danger">Tabel Master</a>
+                    <h2 class="mb-4">Data Admin</h2>
+                    <p class="text-muted">Jumlah Admin: 2</p>
+                    <a href="tambah_admin.html" class="btn btn-danger">Tabel Admin</a>
                 </div>
             </div>
-            <a href="login.html" class="btn btn-danger mt-3">
+            <a href="logout.php" class="btn btn-danger mt-3">
                 <i class="fa fa-sign-out"></i>
                 Keluar
             </a>
+            </button>
         </div>
     </div>
 </body>

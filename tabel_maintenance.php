@@ -118,7 +118,7 @@
 				<!-- Tombol Filter, Reset, dan Download -->
 				<div class="col-md-4 d-flex align-items-end mt-3">
 					<button type="submit" class="btn btn-success me-2">Filter</button>
-					<a href="index.php" class="btn btn-warning me-2">Reset</a>
+					<a href="tabel_maintenance.php" class="btn btn-warning me-2">Reset</a>
 					<a href="print.php?<?php 
 					    echo http_build_query([
 					        'filter_bulan_tahun' => isset($_GET['filter_bulan_tahun']) ? $_GET['filter_bulan_tahun'] : null,
