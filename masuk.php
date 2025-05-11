@@ -46,7 +46,7 @@
             <form class="form-login" method="post" action="login.php">
                 <h3 class="fw-normal text-center">Masuk Akun</h3>
                 <div class="form-floating">
-                    <input type="text" name="username" class="form-control mb-2" placeholder="Username" required>
+                    <input type="username" name="username" class="form-control mb-2" placeholder="Username" required>
                     <label>Username</label>
                 </div>
                 <div class="form-floating">
@@ -57,7 +57,7 @@
                     <i class="fa fa-sign-in"></i>
                     Masuk
                 </button>
-                <p>Tidak Punya Username ? <a href="daftar.html">Daftar</a></p>
+                <p>Tidak Punya Username ? <a href="daftar.php">Daftar</a></p>
                 <p class="text-muted text-center">&copy; 2025</p>
             </form>
         </div>

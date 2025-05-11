@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<?php
+    session_start();
+    if(isset($_SESSION['username'])){
+        header('location: masuk.php');
+        exit;
+    };
+?>
 <html lang="en">
     	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -29,6 +36,20 @@
         }
     </style>
 
+    <script type="text/javascript">
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm_password").value;
+            
+            if (password !== confirmPassword) {
+                alert("Password dan Konfirmasi Password Tidak Sesuai !");
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,16 +57,16 @@
 </head>
 <body>
     <div class="container-fluid">
-        <form class="form-daftar">
+        <form class="form-daftar" onsubmit="return validateForm()" method="post" action="regist.php">
             <h3 class="fw-normal text-center">Daftar User</h3>
-            <input type="text" class="form-control mb-2" placeholder="Username" required>
-            <input type="password" class="form-control mb-2" placeholder="Password" required>
-            <input type="password" class="form-control mb-2" placeholder="Konfirmasi Password" required>
-            <button class="btn btn-primary w-100">
+            <input name= "username" type="username" class="form-control mb-2" placeholder="Username" required>
+            <input name="password" id="password" type="password" class="form-control mb-2" placeholder="Password" required>
+            <input name="confirm_password" id="confirm_password" type="password" class="form-control mb-2" placeholder="Konfirmasi Password" required>
+            <button class="btn btn-primary w-100" type="submit">
                 <i class="fa fa-pencil"></i>
                 Daftar
             </button>
-            <p>Sudah Punya Username ? <a href="masuk.html">Masuk</a></p>
+            <p>Sudah Punya Username ? <a href="masuk.php">Masuk</a></p>
             <p class="text-muted text-center">&copy; 2025</p>
         </form>
     </div>
