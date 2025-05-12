@@ -13,7 +13,14 @@
         if($result){
             if(password_verify($password, $result['password'])){
                 $_SESSION['username'] = $username;
-                header ('Location: dashboard.php');
+                $_SESSION['role'] = $result['role'];
+
+                if($result['role'] == 'admin'){
+                    header ('Location: dashboard_admin.php');
+                }else if($result['role'] == 'user'){
+                    header ('Location: dashboard_user.php');
+                }
+                exit();
             }else{
                 echo " 
                 <script>
