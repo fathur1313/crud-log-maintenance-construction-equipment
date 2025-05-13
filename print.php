@@ -27,9 +27,25 @@ if (isset($_GET['filter_alat_berat']) && $_GET['filter_alat_berat'] != '') {
 
 // Eksekusi query
 $result = mysqli_query($conn, $query);
+if (!$result) {
+    die('Query Error: ' . mysqli_error($conn));
+}
 
 // Mulai output HTML untuk PDF
-$html = '<h2 style="text-align: center;">Laporan Perawatan Alat Berat</h2>';
+$kop_surat_path = realpath(__DIR__ . '/img/Logo/kop_surat.png');
+if ($kop_surat_path && file_exists($kop_surat_path)) {
+    $kop_surat_data = base64_encode(file_get_contents($kop_surat_path));
+    $kop_surat_type = mime_content_type($kop_surat_path);
+    $html = '<div style="text-align: center; margin-bottom: 20px;">
+                <img src="data:' . $kop_surat_type . ';base64,' . $kop_surat_data . '" style="width: 100%; max-height: 150px;" alt="Kop Surat">
+             </div>';
+} else {
+    $html = '<div style="text-align: center; margin-bottom: 20px;">
+                <p style="color: red;">Kop surat tidak ditemukan.</p>
+             </div>';
+}
+
+$html .= '<h2 style="text-align: center;">Laporan Perawatan Alat Berat</h2>';
 
 // Tambahkan keterangan filter
 $periode = '';
