@@ -56,6 +56,15 @@
     <title>Document</title>
 </head>
 <body>
+
+    <nav class="navbar navbar-light bg-light">
+      <div class="d-flex align-items-center ps-3">
+        <img src="img/Logo/ITP_LOGO.png" width="30" height="30" alt="Logo" class="me-2">
+        <span class="navbar-brand mb-0 h1">INDO TRAKTORS PAPUA</span>
+      </div>
+    </nav>
+
+
     <div class="container-fluid">
         <form class="form-daftar" onsubmit="return validateForm()" method="post" action="regist.php">
             <h3 class="fw-normal text-center">Daftar User</h3>
