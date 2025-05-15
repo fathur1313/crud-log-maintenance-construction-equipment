@@ -12,6 +12,9 @@
     // Query dasar
     $query = "SELECT * FROM tb_laporan_unit WHERE tanggal IS NOT NULL";
 
+    // Query untuk menghitung total biaya
+    $query_total = "SELECT SUM(harga_total) AS total_biaya FROM tb_laporan_unit WHERE tanggal IS NOT NULL";
+
     // Tambahkan filter bulan dan tahun jika ada
     if (isset($_GET['filter_bulan_tahun']) && $_GET['filter_bulan_tahun'] != '') {
         $filter_bulan_tahun = $_GET['filter_bulan_tahun'];
@@ -19,6 +22,7 @@
             $filter_bulan = date('m', strtotime($filter_bulan_tahun));
             $filter_tahun = date('Y', strtotime($filter_bulan_tahun));
             $query .= " AND MONTH(tanggal) = '$filter_bulan' AND YEAR(tanggal) = '$filter_tahun'";
+            $query_total .= " AND MONTH(tanggal) = '$filter_bulan' AND YEAR(tanggal) = '$filter_tahun'";
         } else {
             echo "<div class='alert alert-danger'>Format bulan dan tahun tidak valid!</div>";
         }
@@ -31,13 +35,23 @@
         $alat_berat_result = mysqli_query($conn, $alat_berat_query);
         if (mysqli_num_rows($alat_berat_result) > 0) {
             $query .= " AND alat_berat = '$filter_alat_berat'";
+            $query_total .= " AND alat_berat = '$filter_alat_berat'";
         } else {
             echo "<div class='alert alert-danger'>Alat berat tidak valid!</div>";
         }
     }
 
-    // Eksekusi query
+    // Eksekusi query untuk data tabel
     $sql = mysqli_query($conn, $query);
+
+    // Eksekusi query untuk total biaya
+    $result_total = mysqli_query($conn, $query_total);
+    $total_biaya = 0;
+    if ($result_total) {
+        $row_total = mysqli_fetch_assoc($result_total);
+        $total_biaya = $row_total['total_biaya'] ?? 0; // Jika null, set ke 0
+    }
+
     $no = 0;
 ?>
 
@@ -135,19 +149,24 @@
                 <div class="col-md-4 d-flex align-items-end mt-3">
                     <button type="submit" class="btn btn-success me-2">Filter</button>
                     <a href="tabel_maintenance.php" class="btn btn-warning me-2">Reset</a>
-					
+                    
                     <?php if ($_SESSION['role'] == 'admin') { ?>
                         <a href="print.php?<?php 
-					    echo http_build_query([
-					        'filter_bulan_tahun' => isset($_GET['filter_bulan_tahun']) ? $_GET['filter_bulan_tahun'] : null,
-					        'filter_alat_berat' => isset($_GET['filter_alat_berat']) ? $_GET['filter_alat_berat'] : null
-					    ]); ?>" 
-					    class="btn btn-danger" target="_blank">Download</a>
+                        echo http_build_query([
+                            'filter_bulan_tahun' => isset($_GET['filter_bulan_tahun']) ? $_GET['filter_bulan_tahun'] : null,
+                            'filter_alat_berat' => isset($_GET['filter_alat_berat']) ? $_GET['filter_alat_berat'] : null
+                        ]); ?>" 
+                        class="btn btn-danger" target="_blank">Download</a>
                     <?php } ?>
                 </div>
 
             </div>
         </form>
+    </div>
+
+    <!-- Total Biaya -->
+    <div class="mt-3">
+        <h5>Total Biaya: Rp <?php echo number_format($total_biaya, 0, ',', '.'); ?></h5>
     </div>
 
     <div class="table-responsive mt-3">

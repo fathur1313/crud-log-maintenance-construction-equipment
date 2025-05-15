@@ -56,22 +56,12 @@
                 ?>
             </span>
             <h1 class="text-center">Dashboard User Perusahaan</h1>
-            <div class="row">
+            <div class="d-flex justify-content-center align-items-center">
                 <div class="col-md-4">
                     <h2 class="mb-4">Data Maintenance Alat</h2>
                     <p class="text-muted">Jumlah Data: ~</p>
                     <a href="tabel_maintenance.php" class="btn btn-success">Tabel Data</a>
                 </div>
-                <!-- <div class="col-md-4">
-                    <h2 class="mb-4">Data Pengguna</h2>
-                    <p class="text-muted">Jumlah Pengguna: 5</p>
-                    <a href="tambah_pengguna.html" class="btn btn-warning">Tabel Pengguna</a>
-                </div>
-                <div class="col-md-4">
-                    <h2 class="mb-4">Data Admin</h2>
-                    <p class="text-muted">Jumlah Admin: 2</p>
-                    <a href="tambah_admin.html" class="btn btn-danger">Tabel Admin</a>
-                </div> -->
             </div>
             <a href="logout.php" class="btn btn-danger mt-3">
                 <i class="fa fa-sign-out"></i>

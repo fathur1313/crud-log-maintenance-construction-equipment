@@ -9,6 +9,9 @@ include 'koneksi.php';
 // Query dasar
 $query = "SELECT * FROM tb_laporan_unit WHERE 1=1";
 
+// Query untuk menghitung total biaya
+$query_total = "SELECT SUM(harga_total) AS total_biaya FROM tb_laporan_unit WHERE 1=1";
+
 // Tambahkan filter bulan dan tahun jika ada
 if (isset($_GET['filter_bulan_tahun']) && $_GET['filter_bulan_tahun'] != '') {
     $filter_bulan_tahun = $_GET['filter_bulan_tahun'];
@@ -16,6 +19,7 @@ if (isset($_GET['filter_bulan_tahun']) && $_GET['filter_bulan_tahun'] != '') {
         $filter_bulan = date('m', strtotime($filter_bulan_tahun));
         $filter_tahun = date('Y', strtotime($filter_bulan_tahun));
         $query .= " AND MONTH(tanggal) = '$filter_bulan' AND YEAR(tanggal) = '$filter_tahun'";
+        $query_total .= " AND MONTH(tanggal) = '$filter_bulan' AND YEAR(tanggal) = '$filter_tahun'";
     }
 }
 
@@ -23,12 +27,21 @@ if (isset($_GET['filter_bulan_tahun']) && $_GET['filter_bulan_tahun'] != '') {
 if (isset($_GET['filter_alat_berat']) && $_GET['filter_alat_berat'] != '') {
     $filter_alat_berat = $_GET['filter_alat_berat'];
     $query .= " AND alat_berat = '$filter_alat_berat'";
+    $query_total .= " AND alat_berat = '$filter_alat_berat'";
 }
 
-// Eksekusi query
+// Eksekusi query untuk data tabel
 $result = mysqli_query($conn, $query);
 if (!$result) {
     die('Query Error: ' . mysqli_error($conn));
+}
+
+// Eksekusi query untuk total biaya
+$result_total = mysqli_query($conn, $query_total);
+$total_biaya = 0;
+if ($result_total) {
+    $row_total = mysqli_fetch_assoc($result_total);
+    $total_biaya = $row_total['total_biaya'] ?? 0; // Jika null, set ke 0
 }
 
 // Mulai output HTML untuk PDF
@@ -83,8 +96,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <td>' . $row['part_name'] . '</td>
                 <td>' . $row['part_number'] . '</td>
                 <td>' . $row['qty'] . '</td>
-                <td>' . $row['harga_satuan'] . '</td>
-                <td>' . $row['harga_total'] . '</td>
+                <td>' . number_format($row['harga_satuan'], 0, ',', '.') . '</td>
+                <td>' . number_format($row['harga_total'], 0, ',', '.') . '</td>
                 <td>' . $row['keterangan'] . '</td>';
     $img_path = realpath($_SERVER['DOCUMENT_ROOT'] . '/crud_perusahaan/img/' . $row['foto_dokumentasi']);
     if ($img_path && file_exists($img_path)) {
@@ -94,10 +107,15 @@ while ($row = mysqli_fetch_assoc($result)) {
     } else {
         $html .= '<td>Gambar tidak ditemukan</td>';
     }
-    $html .= '</tr>';
+      $html .= '</tr>';
 }
 
 $html .= '</tbody></table>';
+
+// Tambahkan total biaya di bawah tabel
+$html .= '<p style="text-align: right; margin-top: 20px; font-size: 16px;">
+            <strong>Total Biaya: Rp ' . number_format($total_biaya, 0, ',', '.') . '</strong>
+          </p>';
 
 // Inisialisasi Dompdf
 $dompdf = new Dompdf();
