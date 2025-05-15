@@ -9,7 +9,7 @@
 
 			if($berhasil){
 				$_SESSION['eksekusi'] = "Data Berhasil Ditambahkan";
-				header("location: index.php");
+				header("location: tabel_maintenance.php");
 			} else {
 				echo $berhasil;
 			}
@@ -19,7 +19,7 @@
 			$berhasil = ubah_data($_POST, $_FILES);
 			if($berhasil){
 				$_SESSION['eksekusi'] = "Data Berhasil Diperbarui";
-				header("location: index.php");
+				header("location: tabel_maintenance.php");
 			} else {
 				echo $berhasil;
 			}
@@ -33,7 +33,7 @@
 
 		if($berhasil){
 			$_SESSION['eksekusi'] = "Data Berhasil Dihapus";
-			header("location: index.php");
+			header("location: tabel_maintenance.php");
 		} else {
 			echo $berhasil;
 		}

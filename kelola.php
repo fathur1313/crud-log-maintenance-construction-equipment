@@ -169,7 +169,7 @@
 		  			<?php
 		  				}
 		  			?>
-	  					<a href="index.php" type="button" class="btn btn-danger">
+	  					<a href="tabel_maintenance.php" type="button" class="btn btn-danger">
 	  					<i class="fa fa-times" aria-hidden="true"></i>
 	  				Batal
 	  				</a>
