@@ -13,6 +13,14 @@
     </style>
 </head>
 <body>
+
+    <nav class="navbar navbar-light bg-light">
+      <div class="d-flex align-items-center ps-3">
+        <img src="img/Logo/ITP_LOGO.png" width="30" height="30" alt="Logo" class="me-2">
+        <span class="navbar-brand mb-0 h1">INDO TRAKTORS PAPUA</span>
+      </div>
+    </nav>
+
     <div class="container mt-5">
         <h1 class="mb-4">Daftar Admin</h1>
 
