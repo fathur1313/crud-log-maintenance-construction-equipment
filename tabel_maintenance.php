@@ -62,19 +62,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.bundle.min.js" ></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
 
-    <title>crud_perusahaan</title>
+    <title>INDO TRAKTORS PAPUA</title>
 </head>
 <body>
     <nav class="navbar navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">  
-          CRUD PERUSAHAAN
-        </a>
+      <div class="d-flex align-items-center ps-3">
+        <img src="img/Logo/ITP_LOGO.png" width="30" height="30" alt="Logo" class="me-2">
+        <span class="navbar-brand mb-0 h1">INDO TRAKTORS PAPUA</span>
       </div>
     </nav>
 
@@ -83,10 +82,10 @@
     <h1 class="mt-4">Log Perawatan Alat Berat</h1>
     <figure>
       <blockquote class="blockquote">
-        <p>Berisi Data yang Telah disimpan pada Database.</p>
+        <p>Menampilkan informasi perawatan yang tersimpan dalam basis data.</p>
             </blockquote>
             <figcaption class="blockquote-footer">
-        Someone famous in <cite title="Source Title">Source Title</cite>
+        "Perawatan rutin menjaga performa alat berat tetap optimal." <cite title="Source Title">Divisi Operasional</cite>
       </figcaption>
     </figure>
 
@@ -202,7 +201,7 @@
                     <td><?php echo $result['harga_total'];?></td>
                     <td><?php echo $result['keterangan'];?></td>
                     <td>
-                        <img src="img/<?php echo $result['foto_dokumentasi'];?>" style="width: 125px">
+                        <img src="img/<?php echo $result['foto_dokumentasi'];?>" style="width: 125px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('img/<?php echo $result['foto_dokumentasi'];?>')">
                     </td>
                     <td>
                         <a href="kelola.php?ubah=<?php echo $result['no'];?>" type="button" class="btn btn-success btn-sm">
@@ -220,5 +219,26 @@
         </table>
     </div>
 </div>
+
+<!-- Modal untuk Menampilkan Gambar -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Foto Dokumentasi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" src="" alt="Foto Dokumentasi" style="width: 100%; max-height: 500px; object-fit: contain;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function showImage(src) {
+        document.getElementById('modalImage').src = src;
+    }
+</script>
 </body>
 </html>

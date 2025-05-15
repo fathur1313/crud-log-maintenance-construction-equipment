@@ -70,7 +70,7 @@
 <body>
     <div class="container-fluid">
         <div class="text-center px-4 py-5">
-            <img class="d-block mx-auto mb-2" src="img/Logo/ITP.png" width="95" height="95" alt="Logo">
+            <img class="d-block mx-auto mb-2" src="img/Logo/ITP_LOGO.png" width="95" height="95" alt="Logo">
             <span class="">Selamat Datang
                 <?php
                     echo  $_SESSION['username'];

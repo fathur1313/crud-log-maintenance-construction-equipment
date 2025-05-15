@@ -62,7 +62,7 @@
                         <div class='modal fade' id='ubahPasswordModal" . $row['id_user'] . "' tabindex='-1' aria-labelledby='ubahPasswordModalLabel" . $row['id_user'] . "' aria-hidden='true'>
                             <div class='modal-dialog'>
                                 <div class='modal-content'>
-                                    <form action='ubah_password.php' method='POST'>
+                                    <form action='ubah_password_user.php' method='POST'>
                                         <div class='modal-header'>
                                             <h5 class='modal-title' id='ubahPasswordModalLabel" . $row['id_user'] . "'>Ubah Kata Sandi</h5>
                                             <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>

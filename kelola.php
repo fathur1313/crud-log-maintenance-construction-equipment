@@ -51,13 +51,12 @@
 	<title>crud_perusahaan</title>
 </head>
 <body>
-	<nav class="navbar navbar-light bg-light mb-4">
-	  <div class="container-fluid">
-	    <a class="navbar-brand" href="#">  
-	      CRUD PERUSAHAAN
-	    </a>
-	  </div>
-	</nav>
+    <nav class="navbar navbar-light bg-light">
+      <div class="d-flex align-items-center ps-3">
+        <img src="img/Logo/ITP_LOGO.png" width="30" height="30" alt="Logo" class="me-2">
+        <span class="navbar-brand mb-0 h1">INDO TRAKTORS PAPUA</span>
+      </div>
+    </nav>
 
 	<!-- Main Form Start -->
 	<div class="container">
