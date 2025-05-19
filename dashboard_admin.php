@@ -26,6 +26,12 @@
     $result_admin = mysqli_query($conn, $query_admin);
     $data_admin = mysqli_fetch_assoc($result_admin);
     $total_admin = $data_admin['total_admin'];
+
+    // Query untuk menghitung jumlah manager (role = 'manager')
+    $query_manager = "SELECT COUNT(*) AS total_manager FROM tb_akun WHERE role = 'manager'";
+    $result_manager = mysqli_query($conn, $query_manager);
+    $data_manager = mysqli_fetch_assoc($result_manager);
+    $total_manager = $data_manager['total_manager'];
 ?>
 <html lang="en">
     <!-- Bootstrap -->
@@ -78,20 +84,25 @@
             </span>
             <h1 class="text-center">Dashboard Admin Perusahaan</h1>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h2 class="mb-4">Data Maintenance Alat</h2>
                     <p class="text-muted">Jumlah Data: <?php echo $total_maintenance; ?></p>
                     <a href="tabel_maintenance.php" class="btn btn-success">Tabel Data</a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h2 class="mb-4">Data Pengguna</h2>
                     <p class="text-muted">Jumlah Pengguna: <?php echo $total_user; ?></p>
                     <a href="tabel_user.php" class="btn btn-warning">Tabel Pengguna</a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h2 class="mb-4">Data Admin</h2>
                     <p class="text-muted">Jumlah Admin: <?php echo $total_admin; ?></p>
                     <a href="tabel_admin.php" class="btn btn-danger">Tabel Admin</a>
+                </div>
+                <div class="col-md-3">
+                    <h2 class="mb-4">Data Manager</h2>
+                    <p class="text-muted">Jumlah Manager: <?php echo $total_manager; ?></p>
+                    <a href="tabel_manager.php" class="btn btn-primary">Tabel Manager</a>
                 </div>
             </div>
             <a href="logout.php" class="btn btn-danger mt-3">
