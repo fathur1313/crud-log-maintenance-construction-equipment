@@ -17,8 +17,13 @@
 
                 if($result['role'] == 'admin'){
                     header ('Location: dashboard_admin.php');
-                }else if($result['role'] == 'user'){
+                } else if($result['role'] == 'user'){
                     header ('Location: dashboard_user.php');
+                } else if($result['role'] == 'manager'){
+                    header ('Location: dashboard_manager.php');
+                } else {
+                    // fallback jika role tidak dikenali
+                    header ('Location: masuk.php');
                 }
                 exit();
             }else{
