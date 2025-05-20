@@ -10,7 +10,7 @@ include 'koneksi.php';
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard User Perusahaan</title>
+    <title>Dashboard Manager Perusahaan</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
     <style>
@@ -22,7 +22,7 @@ include 'koneksi.php';
             top: 0;
             left: 0;
             right: 0;
-            z-index: 2001;
+            z-index: 2001; /* lebih tinggi dari sidebar */
         }
         .navbar-custom .navbar-brand,
         .navbar-custom .hamburger,
@@ -89,7 +89,7 @@ include 'koneksi.php';
                 width: 220px;
                 height: 100vh;
                 left: 0;
-                top: 56px;
+                top: 56px; /* Tinggi navbar */
             }
             .sidebar.hide {
                 margin-left: -220px;
@@ -121,7 +121,7 @@ include 'koneksi.php';
     <button class="hamburger" id="toggleSidebar" aria-label="Toggle sidebar">
         <i class="fa fa-bars"></i>
     </button>
-    <span class="navbar-brand mb-0 h1">Dashboard User</span>
+    <span class="navbar-brand mb-0 h1">Dashboard Manager</span>
 </nav>
 <div class="container-fluid">
     <div class="row">
@@ -133,7 +133,7 @@ include 'koneksi.php';
                 </div>
                 <h5 class="mt-3">INDO TRAKTORS PAPUA</h5>
             </div>
-            <a href="#2" class="active" onclick="showContent('maintenance')"><i class="fa fa-cogs"></i> Data Alat</a>
+            <a href="#1" class="active" onclick="showContent('maintenance')"><i class="fa fa-cogs"></i> Data Alat</a>
             <a href="logout.php" class="mt-5 btn btn-danger w-100"><i class="fa fa-sign-out"></i> Keluar</a>
         </nav>
         <!-- Content -->
@@ -142,7 +142,7 @@ include 'koneksi.php';
             <div id="maintenance" class="dashboard-content">
                 <h3 class="mt-5">Data Maintenance Alat</h3>
                 <?php
-                    $_SESSION['role'] = 'user'; // pastikan role user
+                    $_SESSION['role'] = 'manager';
                     include 'partial_tabel_maintenance.php';
                 ?>
             </div>
@@ -156,10 +156,7 @@ function showContent(id) {
     document.getElementById(id).style.display = 'block';
     event.target.classList.add('active');
 }
-window.onload = function() {
-    showContent('maintenance');
-    document.querySelector('.sidebar a[href="#2"]').classList.add('active');
-};
+
 // Sidebar toggle
 document.getElementById('toggleSidebar').onclick = function() {
     document.getElementById('sidebar').classList.toggle('hide');
@@ -176,6 +173,13 @@ window.addEventListener('resize', function() {
         document.getElementById('main-content').style.marginLeft = '220px';
     }
 });
+window.onload = function() {
+    if(window.innerWidth <= 768){
+        document.getElementById('main-content').style.marginLeft = '0';
+    } else {
+        document.getElementById('main-content').style.marginLeft = '220px';
+    }
+};
 </script>
 </body>
 </html>

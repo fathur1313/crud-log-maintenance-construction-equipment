@@ -3,6 +3,21 @@
 	include 'koneksi.php';
 	session_start();
 
+	function redirect_dashboard($pesan) {
+        $role = $_SESSION['role'] ?? '';
+        $hash = '#1'; // tab Data Alat
+        if ($role == 'admin') {
+            echo "<script>alert('$pesan'); window.location.href='dashboard_admin.php$hash';</script>";
+        } elseif ($role == 'user') {
+            echo "<script>alert('$pesan'); window.location.href='dashboard_user.php$hash';</script>";
+        } elseif ($role == 'manager') {
+            echo "<script>alert('$pesan'); window.location.href='dashboard_manager.php$hash';</script>";
+        } else {
+            echo "<script>alert('$pesan'); window.location.href='masuk.php';</script>";
+        }
+        exit;
+    }
+
 	$no				= '';
 	$tanggal		= '';
 	$alat_berat		= '';
@@ -167,8 +182,18 @@
 		  				</button>
 		  			<?php
 		  				}
+		  				$role = $_SESSION['role'] ?? '';
+					    if ($role == 'admin') {
+					        $batal_link = 'dashboard_admin.php#1';
+					    } elseif ($role == 'user') {
+					        $batal_link = 'dashboard_user.php#1';
+					    } elseif ($role == 'manager') {
+					        $batal_link = 'dashboard_manager.php#1';
+					    } else {
+					        $batal_link = 'masuk.php';
+					    }
 		  			?>
-	  					<a href="tabel_maintenance.php" type="button" class="btn btn-danger">
+	  					<a href="<?= $batal_link ?>" type="button" class="btn btn-danger">
 	  					<i class="fa fa-times" aria-hidden="true"></i>
 	  				Batal
 	  				</a>
