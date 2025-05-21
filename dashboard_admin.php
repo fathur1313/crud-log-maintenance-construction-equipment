@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <?php
-    session_start();
-    if(!isset($_SESSION['username'])){
-        header('location: masuk.php');
-        exit;
-    };
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('location: masuk.php');
+    exit;
+}
 
-    // Koneksi ke database
-    include 'koneksi.php';
+// Koneksi ke database
+include 'koneksi.php';
 
-    // Query untuk menghitung jumlah data di tabel maintenance
-    $query_maintenance = "SELECT COUNT(*) AS total_maintenance FROM tb_laporan_unit";
-    $result_maintenance = mysqli_query($conn, $query_maintenance);
-    $data_maintenance = mysqli_fetch_assoc($result_maintenance);
-    $total_maintenance = $data_maintenance['total_maintenance'];
+// Query jumlah data
+$total_maintenance = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_maintenance FROM tb_laporan_unit"))['total_maintenance'];
+$total_user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_user FROM tb_akun WHERE role = 'user'"))['total_user'];
+$total_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_admin FROM tb_akun WHERE role = 'admin'"))['total_admin'];
+$total_manager = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_manager FROM tb_akun WHERE role = 'manager'"))['total_manager'];
 
-    // Query untuk menghitung jumlah pengguna (role = 'user')
-    $query_user = "SELECT COUNT(*) AS total_user FROM tb_akun WHERE role = 'user'";
-    $result_user = mysqli_query($conn, $query_user);
-    $data_user = mysqli_fetch_assoc($result_user);
-    $total_user = $data_user['total_user'];
+// Proses tambah petugas
+$alert_petugas = '';
+if (isset($_POST['tambah_petugas'])) {
+    $username = mysqli_real_escape_string($conn, $_POST['username_petugas']);
+    $password = password_hash($_POST['password_petugas'], PASSWORD_DEFAULT);
+    $role = mysqli_real_escape_string($conn, $_POST['role_petugas']);
 
-    // Query untuk menghitung jumlah admin (role = 'admin')
-    $query_admin = "SELECT COUNT(*) AS total_admin FROM tb_akun WHERE role = 'admin'";
-    $result_admin = mysqli_query($conn, $query_admin);
-    $data_admin = mysqli_fetch_assoc($result_admin);
-    $total_admin = $data_admin['total_admin'];
-
-    // Query untuk menghitung jumlah manager (role = 'manager')
-    $query_manager = "SELECT COUNT(*) AS total_manager FROM tb_akun WHERE role = 'manager'";
-    $result_manager = mysqli_query($conn, $query_manager);
-    $data_manager = mysqli_fetch_assoc($result_manager);
-    $total_manager = $data_manager['total_manager'];
+    $cek = mysqli_query($conn, "SELECT * FROM tb_akun WHERE username='$username'");
+    if (mysqli_num_rows($cek) > 0) {
+        $alert_petugas = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Username sudah terdaftar!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>';
+    } else {
+        $insert = mysqli_query($conn, "INSERT INTO tb_akun (username, password, role) VALUES ('$username', '$password', '$role')");
+        if ($insert) {
+            $alert_petugas = '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                Petugas berhasil ditambahkan!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+        } else {
+            $alert_petugas = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Gagal menambah petugas!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+        }
+    }
+}
 ?>
 <html lang="en">
 <head>
@@ -45,100 +56,54 @@
             background: #343a40 !important;
             color: #fff !important;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 2001;
         }
         .navbar-custom .navbar-brand,
         .navbar-custom .hamburger,
-        .navbar-custom .fa-bars {
-            color: #fff !important;
-        }
+        .navbar-custom .fa-bars { color: #fff !important; }
         .sidebar {
-            min-height: 100vh;
-            height: 100vh;
-            background: #343a40;
-            color: #fff;
+            min-height: 100vh; height: 100vh;
+            background: #343a40; color: #fff;
             padding-top: 30px;
             transition: margin-left 0.3s, width 0.3s;
-            position: fixed;
-            left: 0;
-            top: 56px; /* di bawah navbar */
-            width: 220px;
-            z-index: 1000;
+            position: fixed; left: 0; top: 56px;
+            width: 220px; z-index: 1000;
         }
-        .sidebar.hide {
-            margin-left: -220px;
-        }
+        .sidebar.hide { margin-left: -220px; }
         .sidebar a {
-            color: #fff !important;
-            display: block;
-            padding: 15px 20px;
-            text-decoration: none !important;
+            color: #fff !important; display: block;
+            padding: 15px 20px; text-decoration: none !important;
             transition: background 0.2s;
         }
         .sidebar a.active, .sidebar a:hover {
-            background: #495057;
-            color: #fff !important;
+            background: #495057; color: #fff !important;
             text-decoration: none !important;
         }
         .content-area {
-            padding: 40px 30px;
-            background: #fff;
-            min-height: 100vh;
-            transition: margin-left 0.3s;
-            margin-left: 220px;
-            margin-top: 56px; /* agar tidak tertutup navbar */
+            padding: 40px 30px; background: #fff;
+            min-height: 100vh; transition: margin-left 0.3s;
+            margin-left: 220px; margin-top: 56px;
         }
         .logo-img-wrapper {
-            background: #fff;
-            display: inline-block;
-            padding: 10px;
-            border-radius: 12px;
+            background: #fff; display: inline-block;
+            padding: 10px; border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             margin-bottom: 10px;
         }
-        .logo-img {
-            width: 60px;
-            display: block;
-        }
+        .logo-img { width: 60px; display: block; }
         .hamburger {
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: #fff;
-            margin-right: 15px;
+            font-size: 1.5rem; background: none;
+            border: none; color: #fff; margin-right: 15px;
         }
         @media (max-width: 768px) {
-            .sidebar {
-                width: 220px;
-                height: 100vh;
-                left: 0;
-                top: 56px;
-            }
-            .sidebar.hide {
-                margin-left: -220px;
-            }
-            .content-area {
-                padding: 20px 10px;
-                margin-left: 0;
-                margin-top: 56px;
-            }
-            .navbar-custom {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 2001;
-            }
-            body {
-                padding-top: 0;
-            }
+            .sidebar { width: 220px; height: 100vh; left: 0; top: 56px; }
+            .sidebar.hide { margin-left: -220px; }
+            .content-area { padding: 20px 10px; margin-left: 0; margin-top: 56px; }
+            .navbar-custom { position: fixed; top: 0; left: 0; right: 0; z-index: 2001; }
+            body { padding-top: 0; }
         }
-        .sidebar.hide ~ .content-area {
-            margin-left: 0 !important;
-        }
+        .sidebar.hide ~ .content-area { margin-left: 0 !important; }
     </style>
 </head>
 <body>
@@ -166,25 +131,26 @@
         <!-- Content -->
         <main class="content-area col" id="main-content">
             <h2>Selamat Datang, <?php echo $_SESSION['username']; ?></h2>
+            <!-- Data Alat -->
             <div id="maintenance" class="dashboard-content">
                 <h3>Data Alat</h3>
                 <?php
-                    $sql = mysqli_query($conn, "SELECT * FROM tb_laporan_unit WHERE tanggal IS NOT NULL");
-                    include 'partial_tabel_maintenance.php';
+                $sql = mysqli_query($conn, "SELECT * FROM tb_laporan_unit WHERE tanggal IS NOT NULL");
+                include 'partial_tabel_maintenance.php';
                 ?>
-                <!-- Modal untuk Menampilkan Gambar -->
+                <!-- Modal Gambar -->
                 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="imageModalLabel">Foto Dokumentasi</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body text-center">
-                        <img id="modalImage" src="" alt="Foto Dokumentasi" style="width: 100%; max-height: 500px; object-fit: contain;">
-                      </div>
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imageModalLabel">Foto Dokumentasi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img id="modalImage" src="" alt="Foto Dokumentasi" style="width: 100%; max-height: 500px; object-fit: contain;">
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
                 <script>
                     function showImage(src) {
@@ -192,8 +158,35 @@
                     }
                 </script>
             </div>
+            <!-- Data Petugas -->
             <div id="petugas" class="dashboard-content" style="display:none;">
                 <h3>Data Petugas</h3>
+                <?php if (!empty($alert_petugas)) echo $alert_petugas; ?>
+                <!-- Form Tambah Petugas -->
+                <div class="card mb-4">
+                    <div class="card-header">Tambah Petugas</div>
+                    <div class="card-body">
+                        <form method="POST" action="#2">
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <input type="text" name="username_petugas" class="form-control" placeholder="Username" required>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <input type="password" name="password_petugas" class="form-control" placeholder="Password" required>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <select name="role_petugas" class="form-control" required>
+                                        <option value="">Pilih Role</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="manager">Manager</option>
+                                        <option value="user">User</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" name="tambah_petugas" class="btn btn-primary mt-2">Tambah Petugas</button>
+                        </form>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -216,9 +209,9 @@
                                 echo "<td>" . htmlspecialchars($row['username']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['role']) . "</td>";
                                 echo "<td class='text-center'>
-                                        <a href=\"ubah_password_petugas.php?id_user={$row['id_user']}\" class=\"btn btn-warning btn-sm\">Ubah Password</a>
-                                        <a href=\"hapus_petugas.php?id_user={$row['id_user']}\" class=\"btn btn-danger btn-sm\" onclick=\"return confirm('Yakin hapus petugas ini?')\">Hapus</a>
-                                      </td>";
+                                    <a href=\"ubah_password_petugas.php?id_user={$row['id_user']}\" class=\"btn btn-warning btn-sm\">Ubah Password</a>
+                                    <a href=\"hapus_petugas.php?id_user={$row['id_user']}\" class=\"btn btn-danger btn-sm\" onclick=\"return confirm('Yakin hapus petugas ini?')\">Hapus</a>
+                                </td>";
                                 echo "</tr>";
                             }
                         } else {
@@ -268,6 +261,14 @@ window.addEventListener('resize', function() {
         document.getElementById('main-content').style.marginLeft = '220px';
     }
 });
+</script>
+<script>
+if (window.location.hash !== "#2" && window.location.search === "") {
+    if (document.referrer.indexOf("dashboard_admin.php") !== -1 && <?php echo isset($_POST['tambah_petugas']) ? 'true' : 'false'; ?>) {
+        window.location.hash = "#2";
+        window.location.reload();
+    }
+}
 </script>
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>
