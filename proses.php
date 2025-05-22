@@ -6,13 +6,17 @@
         $role = $_SESSION['role'] ?? '';
         $hash = '#1'; // tab Data Alat
         if ($role == 'admin') {
-            echo "<script>alert('$pesan'); window.location.href='dashboard_admin.php$hash';</script>";
+            $_SESSION['eksekusi'] = $pesan;
+            header('Location: dashboard_admin.php' . $hash);
         } elseif ($role == 'user') {
-            echo "<script>alert('$pesan'); window.location.href='dashboard_user.php$hash';</script>";
+            $_SESSION['eksekusi'] = $pesan;
+            header('Location: dashboard_user.php' . $hash);
         } elseif ($role == 'manager') {
-            echo "<script>alert('$pesan'); window.location.href='dashboard_manager.php$hash';</script>";
+            $_SESSION['eksekusi'] = $pesan;
+            header('Location: dashboard_manager.php' . $hash);
         } else {
-            echo "<script>alert('$pesan'); window.location.href='masuk.php';</script>";
+            $_SESSION['eksekusi'] = $pesan;
+            header('Location: masuk.php');
         }
         exit;
     }

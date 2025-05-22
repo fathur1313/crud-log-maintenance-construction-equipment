@@ -27,7 +27,7 @@ $result_total = mysqli_query($conn, $query_total);
 $row_total = mysqli_fetch_assoc($result_total);
 $total_biaya = $row_total['total_biaya'] ?? 0;
 
-// Notifikasi Eksekusi
+// Notifikasi Eksekusi (akan tampil di semua dashboard yang include partial ini)
 if (isset($_SESSION['eksekusi'])): ?>
     <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
         <?php
@@ -38,8 +38,8 @@ if (isset($_SESSION['eksekusi'])): ?>
     </div>
 <?php endif; ?>
 
-<div class="container-fluid px-0" style="max-width: 100%;">
-    <div class="mt-4" style="max-width: 1000px; margin: 0 auto;">
+<div class="container-fluid px-0" >
+    <div class="mt-4">
         <form method="GET" action="">
             <div class="row g-3 align-items-end">
                 <!-- Filter Alat Berat -->
@@ -97,8 +97,8 @@ if (isset($_SESSION['eksekusi'])): ?>
         </form>
     </div>
 
-    <div class="mt-4" style="max-width: 1000px; margin: 0 auto;">
-        <div class="alert alert-info d-flex align-items-center gap-2 shadow-sm mb-0" role="alert" style="font-size:1.1rem;">
+    <div class="mt-4">
+        <div class="alert alert-info d-flex align-items-end shadow-sm mb-0" role="alert" style="font-size:1.1rem;">
             <i class="fa fa-money-bill-wave fa-lg text-success"></i>
             <strong>Total Biaya:</strong>
             <span class="ms-2 text-danger fw-bold">Rp <?php echo number_format($total_biaya, 0, ',', '.'); ?></span>
@@ -260,3 +260,5 @@ $sql = mysqli_query($conn, "SELECT * FROM tb_laporan_unit $where ORDER BY tangga
     </ul>
 </nav>
 <?php endif; ?>
+
+<script src="js/bootstrap.bundle.min.js"></script>
