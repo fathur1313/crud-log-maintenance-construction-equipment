@@ -97,7 +97,7 @@
         </a>
 
         <!-- Tombol Kembali ke Dashboard -->
-        <a href="<?php echo ($_SESSION['role'] == 'admin') ? 'dashboard_admin.php' : 'dashboard_user.php'; ?>" class="btn btn-primary">
+        <a href="<?php echo ($_SESSION['role'] == 'admin') ? 'dashboard_admin.php' : 'dashboard_mekanik.php'; ?>" class="btn btn-primary">
             <i class="fa fa-arrow-left"></i> Kembali ke Dashboard
         </a>
     </div>

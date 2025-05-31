@@ -17,8 +17,8 @@
 
                 if($result['role'] == 'admin'){
                     header ('Location: dashboard_admin.php');
-                } else if($result['role'] == 'user'){
-                    header ('Location: dashboard_user.php');
+                } else if($result['role'] == 'mekanik'){
+                    header ('Location: dashboard_mekanik.php');
                 } else if($result['role'] == 'manager'){
                     header ('Location: dashboard_manager.php');
                 } else {

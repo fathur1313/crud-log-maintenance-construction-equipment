@@ -10,7 +10,7 @@ include 'koneksi.php';
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard User Perusahaan</title>
+    <title>Dashboard Mekanik Perusahaan</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
     <style>
@@ -121,7 +121,7 @@ include 'koneksi.php';
     <button class="hamburger" id="toggleSidebar" aria-label="Toggle sidebar">
         <i class="fa fa-bars"></i>
     </button>
-    <span class="navbar-brand mb-0 h1">Dashboard User</span>
+    <span class="navbar-brand mb-0 h1">Dashboard Mekanik</span>
 </nav>
 <div class="container-fluid">
     <div class="row">
@@ -142,7 +142,7 @@ include 'koneksi.php';
             <div id="maintenance" class="dashboard-content">
                 <h3 class="mt-5">Data Maintenance Alat</h3>
                 <?php
-                    $_SESSION['role'] = 'user'; // pastikan role user
+                    $_SESSION['role'] = 'mekanik'; // pastikan role mekanik
                     include 'partial_tabel_maintenance.php';
                 ?>
             </div>

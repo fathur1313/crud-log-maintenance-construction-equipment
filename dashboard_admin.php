@@ -11,7 +11,7 @@ include 'koneksi.php';
 
 // Query jumlah data
 $total_maintenance = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_maintenance FROM tb_laporan_unit"))['total_maintenance'];
-$total_user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_user FROM tb_akun WHERE role = 'user'"))['total_user'];
+$total_mekanik = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_user FROM tb_akun WHERE role = 'mekanik'"))['total_mekanik'];
 $total_admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_admin FROM tb_akun WHERE role = 'admin'"))['total_admin'];
 $total_manager = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total_manager FROM tb_akun WHERE role = 'manager'"))['total_manager'];
 
@@ -179,7 +179,7 @@ if (isset($_POST['tambah_petugas'])) {
                                         <option value="">Pilih Role</option>
                                         <option value="admin">Admin</option>
                                         <option value="manager">Manager</option>
-                                        <option value="user">User</option>
+                                        <option value="mekanik">Mekanik</option>
                                     </select>
                                 </div>
                             </div>

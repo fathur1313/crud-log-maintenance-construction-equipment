@@ -8,8 +8,8 @@
         $hash = '#1'; // tab Data Alat
         if ($role == 'admin') {
             echo "<script>alert('$pesan'); window.location.href='dashboard_admin.php$hash';</script>";
-        } elseif ($role == 'user') {
-            echo "<script>alert('$pesan'); window.location.href='dashboard_user.php$hash';</script>";
+        } elseif ($role == 'mekanik') {
+            echo "<script>alert('$pesan'); window.location.href='dashboard_mekanik.php$hash';</script>";
         } elseif ($role == 'manager') {
             echo "<script>alert('$pesan'); window.location.href='dashboard_manager.php$hash';</script>";
         } else {
@@ -185,8 +185,8 @@
 		  				$role = $_SESSION['role'] ?? '';
 					    if ($role == 'admin') {
 					        $batal_link = 'dashboard_admin.php#1';
-					    } elseif ($role == 'user') {
-					        $batal_link = 'dashboard_user.php#1';
+					    } elseif ($role == 'mekanik') {
+					        $batal_link = 'dashboard_mekanik.php#1';
 					    } elseif ($role == 'manager') {
 					        $batal_link = 'dashboard_manager.php#1';
 					    } else {

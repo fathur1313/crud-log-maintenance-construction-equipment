@@ -86,7 +86,7 @@ if (isset($_SESSION['eksekusi'])): ?>
                             <span>Download</span>
                         </a>
                     <?php endif; ?>
-                    <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'user'): ?>
+                    <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'mekanik'): ?>
                         <a href="kelola.php" class="btn btn-primary flex-fill shadow-sm d-flex align-items-center gap-2">
                             <i class="fa fa-plus fa-lg"></i>
                             <span>Tambah Data</span>

@@ -8,9 +8,9 @@
         if ($role == 'admin') {
             $_SESSION['eksekusi'] = $pesan;
             header('Location: dashboard_admin.php' . $hash);
-        } elseif ($role == 'user') {
+        } elseif ($role == 'mekanik') {
             $_SESSION['eksekusi'] = $pesan;
-            header('Location: dashboard_user.php' . $hash);
+            header('Location: dashboard_mekanik.php' . $hash);
         } elseif ($role == 'manager') {
             $_SESSION['eksekusi'] = $pesan;
             header('Location: dashboard_manager.php' . $hash);
