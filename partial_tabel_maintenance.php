@@ -169,7 +169,7 @@ $sql = mysqli_query($conn, "SELECT * FROM tb_laporan_unit $where ORDER BY tangga
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="proses.php?hapus=<?php echo $result['no']; ?>" class="btn btn-danger btn-sm"
-                                onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Tersebut???')" title="Hapus">
+                                onClick="return confirm('Apakah anda yakin ingin menghapus data tersebut')" title="Hapus">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </div>
