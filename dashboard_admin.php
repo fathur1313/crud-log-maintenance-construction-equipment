@@ -179,7 +179,7 @@ if (isset($_POST['tambah_petugas'])) {
                                         <option value="">Pilih Role</option>
                                         <option value="admin">Admin</option>
                                         <option value="manager">Manager</option>
-                                        <option value="mekanik">Mekanik</option>
+                                        <option value="user">User</option>
                                     </select>
                                 </div>
                             </div>
