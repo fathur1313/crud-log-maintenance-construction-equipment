@@ -3,41 +3,45 @@
     session_start();
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $username = $_POST['username'];
+        $username = trim($_POST['username']);
         $password = $_POST['password'];
-       
-        $query = "SELECT * FROM tb_akun WHERE username = '$username'";
-        $sql = mysqli_query($conn, $query);
-        $result = mysqli_fetch_assoc($sql);
-       
-        if($result){
-            if(password_verify($password, $result['password'])){
-                $_SESSION['username'] = $username;
-                $_SESSION['role'] = $result['role'];
 
-                if($result['role'] == 'admin'){
-                    header ('Location: dashboard_admin.php');
-                } else if($result['role'] == 'manager'){
-                    header ('Location: dashboard_manager.php');
-                } else if($result['role'] == 'mekanik' || $result['role'] == 'user'){
-                    // treat 'user' same as 'mekanik' for dashboard access
-                    header ('Location: dashboard_mekanik.php');
+        // Use prepared statement to avoid SQL injection
+        $stmt = mysqli_prepare($conn, "SELECT username, password, role FROM tb_akun WHERE username = ?");
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, 's', $username);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_store_result($stmt);
+
+            if (mysqli_stmt_num_rows($stmt) > 0) {
+                mysqli_stmt_bind_result($stmt, $db_username, $db_password, $db_role);
+                mysqli_stmt_fetch($stmt);
+
+                if (password_verify($password, $db_password)) {
+                    session_regenerate_id(true);
+                    $_SESSION['username'] = $db_username;
+                    $_SESSION['role'] = $db_role;
+
+                    if ($db_role == 'admin') {
+                        header('Location: dashboard_admin.php');
+                    } else if ($db_role == 'manager') {
+                        header('Location: dashboard_manager.php');
+                    } else {
+                        header('Location: dashboard_mekanik.php');
+                    }
+                    mysqli_stmt_close($stmt);
+                    exit();
                 } else {
-                    // fallback jika role tidak dikenali
-                    header ('Location: masuk.php');
+                    echo "<script>alert('password salah'); window.location.href='masuk.php';</script>";
                 }
-                exit();
-            }else{
-                echo " 
-                <script>
-                    alert('password salah'); window.location.href='masuk.php';
-                </script>";
+            } else {
+                echo "<script>alert('username tidak tersedia'); window.location.href='masuk.php';</script>";
             }
+
+            mysqli_stmt_close($stmt);
         } else {
-            echo " 
-                <script>
-                    alert('username tidak tersedia'); window.location.href='masuk.php';
-                </script>";
+            // Fallback jika prepared statement gagal
+            echo "<script>alert('Terjadi kesalahan server'); window.location.href='masuk.php';</script>";
         }
     }
 ?>

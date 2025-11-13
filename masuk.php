@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <?php
     session_start();
-    if(isset($_SESSION['username'])){
-        header('location: masuk.php');
+    if (isset($_SESSION['username'])) {
+        // Redirect user to appropriate dashboard based on role to avoid loop
+        if (isset($_SESSION['role'])) {
+            if ($_SESSION['role'] === 'admin') {
+                header('Location: dashboard_admin.php');
+            } else if ($_SESSION['role'] === 'manager') {
+                header('Location: dashboard_manager.php');
+            } else {
+                header('Location: dashboard_mekanik.php');
+            }
+        } else {
+            header('Location: dashboard_mekanik.php');
+        }
         exit;
-    };
+    }
 ?>
 <html lang="en">
     	<!-- Bootstrap -->
@@ -55,7 +66,7 @@
             <form class="form-login" method="post" action="login.php">
                 <h3 class="fw-normal text-center">Masuk Akun</h3>
                 <div class="form-floating">
-                    <input type="username" name="username" class="form-control mb-2" placeholder="Username" required>
+                    <input type="text" name="username" class="form-control mb-2" placeholder="Username" required>
                     <label>Username</label>
                 </div>
                 <div class="form-floating">
